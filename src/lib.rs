@@ -1,26 +1,27 @@
-use std::include_str;
-use std::collections::HashMap;
 use rand::{
     thread_rng,
     Rng,
 };
 
+pub mod wordlist;
+pub mod roller;
+
+use crate::wordlist::{
+    load,
+    WordLists,
+};
+use crate::roller::Roller;
 
 pub fn read_file() {
-    let file = include_str!("../resources/beale_list.txt");
-    let x: Vec<&str> = file.split("\n").collect();
-    let mut words = HashMap::new();
-    for line in x.iter() {
-        let key_value: Vec<&str> = line.split_whitespace().collect();
-        words.insert(key_value[0], key_value[1]);
-    }
 
-    
-    
+    let words = load(&WordLists::American);
+    let mut roller = Roller::new();
+    let throws = roller.get_n_throws(6);
+
     let mut pass_phrase = String::new();
-    for _ in 1..6 {
-        let throw_str = get_n_throws(6);
-        let word = words.get(throw_str.as_str()).unwrap();
+    for i in 0..5 {
+        let throw = throws.get_as_string(i);
+        let word = *words.get(throw.as_str()).unwrap();
         pass_phrase += to_uppercase(word).as_str();
     }
 
