@@ -2,6 +2,7 @@ use rand::{
     thread_rng,
     Rng,
 };
+use rand::rngs::ThreadRng;
 
 pub mod wordlist;
 pub mod roller;
@@ -15,13 +16,13 @@ use crate::roller::Roller;
 pub fn read_file() {
 
     let words = load(&WordLists::American);
-    let mut roller = Roller::new();
+    let mut roller = Roller::<ThreadRng>::new();
     let throws = roller.get_n_throws(6);
 
     let mut pass_phrase = String::new();
-    for i in 0..5 {
-        let throw = throws.get_as_string(i);
-        let word = *words.get(throw.as_str()).unwrap();
+    for throw in throws {
+        let t = throw.to_string();
+        let word = words.get::<str>(&t).unwrap();
         pass_phrase += to_uppercase(word).as_str();
     }
 
@@ -39,7 +40,7 @@ pub fn get_n_throws(throws: u32) -> String {
     throw_str
 }
 
-pub fn to_uppercase(value: &str) -> String {
+fn to_uppercase(value: &str) -> String {
     let mut chars: Vec<char> = value.chars().collect();
     chars[0] = chars[0].to_uppercase().nth(0).unwrap();
     let uc_word: String = chars.into_iter().collect();

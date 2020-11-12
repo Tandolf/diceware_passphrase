@@ -15,8 +15,8 @@ pub fn load(word_list: &WordLists) -> HashMap<&str, &str>{
 
     let split_words: Vec<&str> = file.split("\n").collect();
     let mut words = HashMap::new();
-    for line in split_words.iter() {
-    let key_value: Vec<&str> = line.split_whitespace().collect();
+    for line in split_words {
+        let key_value: Vec<&str> = line.split_whitespace().collect();
         words.insert(key_value[0], key_value[1]);
     }
 
