@@ -1,13 +1,13 @@
 use std::fmt::Display;
 #[derive(Debug, Clone)]
-struct Phrase {
+pub struct Phrase {
     words: Vec<String>,
     index: usize
 }
 
 impl Phrase {
 
-    fn new(words: Vec<String>) -> Self {
+    pub fn new(words: Vec<String>) -> Self {
         Phrase { words: words, index: 0 }
     }
 
@@ -20,6 +20,18 @@ impl Phrase {
             new_word.push(char)
         }
         self.words[index] = new_word;
+    }
+
+    pub fn to_capitalized(&mut self) -> Self {
+        let words = self.words.iter_mut().map(|w| Phrase::to_uppercase(&w)).collect();
+        Phrase { words: words, index: 0}
+    }
+
+    fn to_uppercase(value: &str) -> String {
+        let mut chars: Vec<char> = value.chars().collect();
+        chars[0] = chars[0].to_uppercase().nth(0).unwrap();
+        let uc_word: String = chars.into_iter().collect();
+        uc_word
     }
 }
 
@@ -71,5 +83,18 @@ mod test {
         let mut phrase = Phrase::new(words);
         assert_eq!(phrase.next(), Some(String::from("Hello")));
         assert_eq!(phrase.next(), Some(String::from("World")));
+    }
+
+    #[test]
+    fn should_test_uppercase_single_word() {
+        assert_eq!(Phrase::to_uppercase("hello"), "Hello");
+    }
+
+    #[test]
+    fn should_capitalize() {
+        let words = vec!(String::from("hello"), String::from("world"));
+        let mut phrase = Phrase::new(words);
+        let phrase = phrase.to_capitalized();
+        assert_eq!(phrase.to_string(), "HelloWorld");
     }
 }
