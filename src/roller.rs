@@ -24,7 +24,7 @@ impl<R: Rng> Roller<R> {
 
     pub fn get_n_throws(&mut self, number: u32) -> Vec<Throw> {
         let mut throws = Vec::new();
-        for _ in 1..number + 1 {
+        for _ in 1..=number {
             let rolls = self.get_n_rolls(5);
             let throw = Throw::new(rolls);
             throws.push(throw);
@@ -34,7 +34,7 @@ impl<R: Rng> Roller<R> {
 
     fn get_n_rolls(&mut self, n: u32) -> u32 {
         let mut sum = 0;
-        for _ in 1..n + 1 {
+        for _ in 1..=n {
             let roll = self.rand.gen_range(1, 7);
             sum = (sum * 10) + roll;
         }

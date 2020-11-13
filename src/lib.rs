@@ -1,11 +1,8 @@
-use rand::{
-    thread_rng,
-    Rng,
-};
 use rand::rngs::ThreadRng;
 
 pub mod wordlist;
 pub mod roller;
+pub mod phrase;
 
 use crate::wordlist::{
     load,
@@ -27,17 +24,6 @@ pub fn read_file() {
     }
 
     println!("{}", pass_phrase);
-}
-
-pub fn get_n_throws(throws: u32) -> String {
-    // TODO: extract to own class init in Default
-    let mut rand = thread_rng();
-    let mut throw_str = String::new();
-    for _ in 1..throws {
-        let dice = rand.gen_range(1, 7);
-        throw_str += dice.to_string().as_str();
-    }
-    throw_str
 }
 
 fn to_uppercase(value: &str) -> String {
