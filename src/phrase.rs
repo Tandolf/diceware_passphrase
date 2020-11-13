@@ -36,10 +36,10 @@ impl Iterator for Phrase {
 
     fn next(&mut self) -> Option<Self::Item> {
         let s = self.words[self.index].clone();
-        self.index += 1;
         if self.index == self.words.len() {
             None
         } else {
+            self.index += 1;
             Some(s)
         }
     }
@@ -68,11 +68,8 @@ mod test {
     #[test]
     fn should_assert_iterator() {
         let words = vec!(String::from("Hello"), String::from("World"));
-        let mut iter = words.iter();
-        assert_eq!(iter.next(), Some(&String::from("Hello")));
-        assert_eq!(iter.next(), Some(&String::from("World")));
+        let mut phrase = Phrase::new(words);
+        assert_eq!(phrase.next(), Some(String::from("Hello")));
+        assert_eq!(phrase.next(), Some(String::from("World")));
     }
-
-
-
 }
