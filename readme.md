@@ -1,6 +1,6 @@
 # Passphrase generator using Diceware methodology
 
-https://github.com/tandolf/passphrase_diceware/workflows/Rust/badge.svg
+![github action workflow](https://github.com/tandolf/passphrase_diceware/workflows/Rust/badge.svg)
 
 This is a rust library generating passphrases using the diceware wordlists.
 
