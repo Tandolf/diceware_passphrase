@@ -30,8 +30,7 @@ impl Phrase {
     fn to_uppercase(value: &str) -> String {
         let mut chars: Vec<char> = value.chars().collect();
         chars[0] = chars[0].to_uppercase().nth(0).unwrap();
-        let uc_word: String = chars.into_iter().collect();
-        uc_word
+        chars.into_iter().collect()
     }
 }
 
@@ -47,10 +46,14 @@ impl Iterator for Phrase {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let s = self.words[self.index].clone();
+        if self.words.len() == 0 {
+            return None
+        }
+
         if self.index == self.words.len() {
             None
         } else {
+            let s = self.words[self.index].clone();
             self.index += 1;
             Some(s)
         }
@@ -83,6 +86,23 @@ mod test {
         let mut phrase = Phrase::new(words);
         assert_eq!(phrase.next(), Some(String::from("Hello")));
         assert_eq!(phrase.next(), Some(String::from("World")));
+    }
+
+    #[test]
+    fn should_test_empty_vec() {
+        let v = vec!();
+        let mut phrase = Phrase::new(v);
+        assert_eq!(phrase.next(), None);
+    }
+
+    #[test]
+    fn should_test_iteration() {
+        let v = vec!(String::from("Hello"));
+        let phrase = Phrase::new(v);
+
+        for word in phrase {
+            assert_eq!(word.to_string(), word);
+        }
     }
 
     #[test]
